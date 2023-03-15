@@ -27,3 +27,12 @@ function validationMax($input, $max) {
         return false;
     endif;
 }
+
+// this function to check the validation to email
+function validationEmail($email) {
+    if(filter_var($email, FILTER_VALIDATE_EMAIL)):
+        return true;
+    else:
+        return false;
+    endif;
+}

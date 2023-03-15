@@ -9,24 +9,44 @@ if(checkRequestMethod("POST") && checkPostInput("name")):
 
     foreach($_POST as $key => $value):
         $$key = sanitizeInput($value);
-        if($password = "password"):
-            $password = hashedPassword($password);
-        endif;
     endforeach;
 
     // Start Validation
     $errors_list = [];
 
+
+    // to valid name
     if(validationRequired($name)):
         $errors_list[] = "name is required";
     elseif(validationMin($name, 3)):
         $errors_list[] = "name must be greater than 3 letters";
-    elseif(validationMax($name, 25)):
-        $errors_list[] = "name must be smaller than 25 letters";
+    elseif(validationMax($name, 30)):
+        $errors_list[] = "name must be smaller than 30 letters";
     endif;
 
+
+    // to valid email
+    if(validationRequired($email)):
+        $errors_list[] = "email is required";
+    elseif(!validationEmail($email)):
+        $errors_list[] = "Please type a valid email";
+    endif;
+
+    
+    // to valid password
+    if(validationRequired($password)):
+        $errors_list[] = "password is required";
+    elseif(validationMin($password, 6)):
+        $errors_list[] = "password must be greater than 6 letters";
+    elseif(validationMax($password, 20)):
+        $errors_list[] = "password must be smaller than 20 letters";
+    endif;
+    
+
     if(empty($errors_list)):
-        echo "Done Don't Found Any Errors ";
+        $users_file = fopen("../data/users.csv", "a+");
+        $data = [$name, $email, $password];
+        fputcsv($users_file, $data);
     else:
         $_SESSION["errors"] = $errors_list;
         header("Location: ../register.php");
