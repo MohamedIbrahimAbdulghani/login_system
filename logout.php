@@ -2,11 +2,13 @@
 
 session_start();
 
+require_once "core/functions.php";
+
 
 session_destroy();
 
 
 session_unset();
 
-header("Location: register.php");
+redirect("register.php");
 

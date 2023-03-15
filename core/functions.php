@@ -27,3 +27,8 @@ function sanitizeInput($input) {
 function hashedPassword($password) {
     return password_hash($password, PASSWORD_DEFAULT);
 }
+
+// this function to redirect path
+function redirect($path) {
+    header("Location: $path");
+}

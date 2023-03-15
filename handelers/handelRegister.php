@@ -47,9 +47,11 @@ if(checkRequestMethod("POST") && checkPostInput("name")):
         $users_file = fopen("../data/users.csv", "a+");
         $data = [$name, $email, $password];
         fputcsv($users_file, $data);
+        $_SESSION["auth"] = [$name, $email];
+        redirect("../index.php");
     else:
         $_SESSION["errors"] = $errors_list;
-        header("Location: ../register.php");
+        redirect("../register.php");
     endif;
     
     // End Validation
